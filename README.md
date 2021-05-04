@@ -2,8 +2,7 @@
 
 cd Sayeks/
 tar xvzf SETUPVHS.tar.gz
-cd SETUPVHS
-chmod u=rwxst Setup.sh
-./Setup
+chmod u=rwxst SETUP.sh
+./SETUP
 
 VHS ELEKTRONİK

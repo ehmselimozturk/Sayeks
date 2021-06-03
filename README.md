@@ -5,7 +5,7 @@ cd Sayeks/
 sudo su
 tar xvzf SETUPVHS.tar.gz
 sudo chmod u=rwxst SETUP.sh
-./SETUP
+./SETUP.sh
 
 
 VHS ELEKTRONİK

@@ -21,7 +21,7 @@ tar xvzf SETUPVHS.tar.gz
 
 sudo su
 
-sudo chmod u=rwxst Driversetup.sh
+sudo chmod u=rwxst PythonDriver.sh
 
 ./Driversetup.sh
 

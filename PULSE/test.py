@@ -57,6 +57,8 @@ tarihliste=[]
 saatliste=[]
 basinclist=[]
 pulsebasinc=[]
+cihazsicaklikdegerleri= []
+basincsicaklikdegerleri = []
 ####Pulse Süreleri####
 fark1b = 0
 fark2b = 0
@@ -80,7 +82,10 @@ tarihbilgisi = 0
 expression = ""
 pressure2= 0
 pressuresonuc2 = 0
-
+cihazsicaklik = 0
+tempDataRaw = 0
+basincsicaklik = 0
+hatadegeri= 0
 
 def main():
     global datesystem
@@ -405,6 +410,9 @@ def main():
                             global ortalamahizfark
                             global pulsebasinc
                             global releasedTime
+                            global hatadegeri
+                            global cihazsicaklikdegerleri
+                            global basincsicaklikdegerleri
                             
 
                             label1=tk.Label(form, text='Sayaç Seri No:'+serinumarasi,fg='green', bg='#dadadb')
@@ -486,13 +494,23 @@ def main():
                             label1=tk.Label(form, text=str(reffark5b),fg='black',bg='#dadadb')
                             label1.place(x=287,y=170)
 
-                            if ortalamayuzdelik>=(-5) and ortalamayuzdelik<=5:
+                            if ortalamayuzdelik>=(-hatadegeri) and ortalamayuzdelik<=hatadegeri:
                                 label1=tk.Label(form, text='TESTTEN GEÇTİ',fg='Green', font='bold')
-                                label1.place(x=300,y=350)
+                                label1.place(x=320,y=350)
                             else:
                                 
                                 label1=tk.Label(form, text='TESTTEN KALDI',fg='Red', font='bold')
-                                label1.place(x=300,y=350)
+                                label1.place(x=320,y=350)
+
+
+                            ### REFERANS SAYAÇ REFERANS DEĞERLERİ
+                            if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
+                                label1=tk.Label(form, text='BAŞARILI TEST',fg='Green', font='bold')
+                                label1.place(x=320,y=370)
+                                
+                            else:
+                                label1=tk.Label(form, text='BAŞARISIZ TEST',fg='Red', font='bold')
+                                label1.place(x=320,y=370)
 
 
                             #Ortalama Pulse
@@ -550,31 +568,35 @@ def main():
                             ### 4. sekm  test ort hız
 
 
-                            label1=tk.Label(form, text='Test Hız (L/dk):',fg='black')
+                            label1=tk.Label(form, text='Test Hız (L/h):',fg='black')
                             label1.place(x=520,y=80)
                             label1=tk.Label(form, text=str(round(ortalamahiz, 3)),fg='black',bg='#dadadb')
                             label1.place(x=625,y=80)
                             ### 4. sekm  ref ort hız
 
 
-                            label1=tk.Label(form, text='Ref. Hız (L/dk):',fg='black')
+                            label1=tk.Label(form, text='Ref. Hız (L/h):',fg='black')
                             label1.place(x=520,y=110)
                             label1=tk.Label(form, text=str(round(ortalamarefhiz, 3)),fg='black',bg='#dadadb')
                             label1.place(x=625,y=110)
                             ### 4. sekm  Ort hız fark
 
 
-                            label1=tk.Label(form, text='Hız Fark (L/dk):',fg='black')
+                            label1=tk.Label(form, text='Hız Fark (L/h):',fg='black')
                             label1.place(x=520,y=140)
                             label1=tk.Label(form, text=str(round(ortalamahizfark, 3)),fg='black',bg='#dadadb')
                             label1.place(x=625,y=140)
 
-                            ### Açık Hava Basıncı
-
-                            label1=tk.Label(form, text='A.Hava P(Bar):',fg='black')
+                            ### Cihaz Sıcaklık Değerleri
+                            label1=tk.Label(form, text='C.Sıcaklığı (C):',fg='black')
                             label1.place(x=520,y=170)
-                            label1=tk.Label(form, text=str(pulsebasinc[4]),fg='black',bg='#dadadb')
+                            label1=tk.Label(form, text=str(round(cihazsicaklikdegerleri[0],3)),fg='black',bg='#dadadb')
                             label1.place(x=625,y=170)
+                             ### Basınç Sıcaklık Değerleri
+                            label1=tk.Label(form, text='G.Sıcaklığı (C):',fg='black')
+                            label1.place(x=520,y=200)
+                            label1=tk.Label(form, text=str(round(basincsicaklikdegerleri[0],3)),fg='black',bg='#dadadb')
+                            label1.place(x=625,y=200)
 
                         #ARAYUZ SONUC BUTTON
                         buton=tk.Button(form, text='Sonuc Al', fg='black', bg='#299584', command=hesapla)
@@ -668,6 +690,11 @@ def main():
                         global ortalamarefhiz
                         global ortalamahizfark
                         global pulsebasinc
+                        global hatadegeri
+                        global cihazsicaklik
+                        global basincsicaklik
+                        global cihazsicaklikdegerleri
+                        global basincsicaklikdegerleri
                         
 
                         f = open('log.txt','a')
@@ -751,24 +778,49 @@ def main():
                         
                         f.write("Test Ort. Hız:  ")
                         f = open('log.txt','a')
-                        f.write(str(round(ortalamahiz, 3))+" L/dk"+"\n")
+                        f.write(str(round(ortalamahiz, 3))+" L/h"+"\n")
 
                         f.write("Ref Ort. Hız:  ")
                         f = open('log.txt','a')
-                        f.write(str(round(ortalamarefhiz, 3))+" L/dk"+"\n")
+                        f.write(str(round(ortalamarefhiz, 3))+" L/h"+"\n")
 
                         f.write("Ort. Hız Farkı:  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(ortalamahizfark,3))+" L/dk"+"\n\n\n")
+                        f.write(str(round(ortalamahizfark,3))+" L/h"+"\n")
 
-                        if ortalamayuzdelik>=(-5) and ortalamayuzdelik<=5:
+                        f.write("Cihaz Sıcaklığı:  ")
+                        f = open('log.txt','a') 
+                        f.write(str(round(cihazsicaklikdegerleri[0],3))+" C"+"\n")
+                        
+                        f.write("Ortam (Gaz) Sıcaklığı:  ")
+                        f = open('log.txt','a') 
+                        f.write(str(round(basincsicaklikdegerleri[0],3))+" C"+"\n\n\n")
+                        
+                        
+                        
+                        
+                        
+
+
+                        if ortalamayuzdelik>=(-hatadegeri) and ortalamayuzdelik<=hatadegeri:
                             f.write("TESTTEN GEÇTİ")
                             f = open('log.txt','a')
-                            f.write("  % "+ str(round(ortalamayuzdelik, 3))+"\n")
+                            f.write("  % "+ str(round(ortalamayuzdelik, 3))+"\n\n\n")
                         else:
                             f.write("TESTTEN KALDI")
                             f = open('log.txt','a')
-                            f.write("  % "+ str(round(ortalamayuzdelik, 3))+"\n")
+                            f.write("  % "+ str(round(ortalamayuzdelik, 3))+"\n\n\n")
+
+                        ### REFERANS SAYAÇ REFERANS DEĞERLERİ
+                        if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
+                            f.write("Başarılı Test (Referans Değer): ")
+                            f = open('log.txt','a')
+                            f.write( str(round(ortalamarefhiz, 3))+"L/h\n\n\n")
+                        else:
+                            f.write("Başarısız Test (Referans Değer): ")
+                            f = open('log.txt','a')
+                            f.write( str(round(ortalamarefhiz, 3))+"L/h\n\n\n")
+
                         f.close()
                         shutil.copy("/home/pi/log.txt", "/home/pi/Desktop/PULSE/")
                         #TEST
@@ -821,54 +873,38 @@ def main():
                         pdf.set_xy(30,30)
                         pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str(datesystem[0]))
+
+                        pdf.set_xy(0,35)
+                        pdf.set_font('Times', 'B', 10)
+                        pdf.cell(10, 50, 'Cihaz Sicakligi (C):')
+
+                        pdf.set_xy(30,35)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(round(cihazsicaklikdegerleri[0],3)))
+
+                        pdf.set_xy(0,40)
+                        pdf.set_font('Times', 'B', 10)
+                        pdf.cell(10, 50, 'O. (Gaz) Sicakligi (C):')
+
+                        pdf.set_xy(35,40)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(round(basincsicaklikdegerleri[0],3)))
                         
                     
                         #PULSE FARKLARI
-                        pdf.set_xy(0,40)
+                        pdf.set_xy(0,50)
                         pdf.set_font('Times', 'B', 11)
                         pdf.cell(10, 50, 'PULSE FARKLARI')
                         
 
                         #1-2 fark
-                        pdf.set_xy(0,45)
+                        pdf.set_xy(0,55)
                         pdf.set_font('Times', 'I', 10)
                         pdf.cell(10, 50, '1. Pulse Suresi(sn):')
 
-                        pdf.set_xy(30,45)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(fark1b))
-                        
-                        pdf.set_xy(43,45)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str("Hata %"))
-                        
-                        pdf.set_xy(55,45)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(yuzdelik1, 3)))
-                        #2-3 fark
-                        pdf.set_xy(0,50)
-                        pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, '2. Pulse Suresi (sn):')
-
-                        pdf.set_xy(30,50)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(fark2b))
-                        
-                        pdf.set_xy(43,50)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str("Hata %"))
-                        
-                        pdf.set_xy(55,50)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(yuzdelik2, 3)))
-                        #3-4 fark
-                        pdf.set_xy(0,55)
-                        pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, '3. Pulse Suresi (sn):')
-
                         pdf.set_xy(30,55)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(fark3b))
+                        pdf.cell(10, 50, str(fark1b))
                         
                         pdf.set_xy(43,55)
                         pdf.set_font('Arial', '', 9)
@@ -876,79 +912,79 @@ def main():
                         
                         pdf.set_xy(55,55)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(yuzdelik3, 3)))
-                        #4-5 Fark
+                        pdf.cell(10, 50, str(round(yuzdelik1, 3)))
+                        #2-3 fark
                         pdf.set_xy(0,60)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, '4. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, '2. Pulse Suresi (sn):')
 
                         pdf.set_xy(30,60)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(fark4b))
-
+                        pdf.cell(10, 50, str(fark2b))
+                        
                         pdf.set_xy(43,60)
                         pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str("Hata %"))
                         
                         pdf.set_xy(55,60)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(yuzdelik4, 3)))
-                        #5-6 fark
+                        pdf.cell(10, 50, str(round(yuzdelik2, 3)))
+                        #3-4 fark
                         pdf.set_xy(0,65)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, '5. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, '3. Pulse Suresi (sn):')
 
                         pdf.set_xy(30,65)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(fark5b))
-
+                        pdf.cell(10, 50, str(fark3b))
+                        
                         pdf.set_xy(43,65)
                         pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str("Hata %"))
                         
                         pdf.set_xy(55,65)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(yuzdelik5, 3)))
-                        #Referans Fark 1-0
+                        pdf.cell(10, 50, str(round(yuzdelik3, 3)))
+                        #4-5 Fark
                         pdf.set_xy(0,70)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'R1. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, '4. Pulse Suresi (sn):')
 
-                        pdf.set_xy(32,70)
+                        pdf.set_xy(30,70)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(reffark1b))
+                        pdf.cell(10, 50, str(fark4b))
 
                         pdf.set_xy(43,70)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str("P (Bar)"))
+                        pdf.cell(10, 50, str("Hata %"))
                         
                         pdf.set_xy(55,70)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[0]))
-                        #Referans Fark 1-2
+                        pdf.cell(10, 50, str(round(yuzdelik4, 3)))
+                        #5-6 fark
                         pdf.set_xy(0,75)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'R2. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, '5. Pulse Suresi (sn):')
 
-                        pdf.set_xy(32,75)
+                        pdf.set_xy(30,75)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(reffark2b))
+                        pdf.cell(10, 50, str(fark5b))
 
                         pdf.set_xy(43,75)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str("P (Bar)"))
+                        pdf.cell(10, 50, str("Hata %"))
                         
                         pdf.set_xy(55,75)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[1]))
-                        #Referans Fark 2-3
+                        pdf.cell(10, 50, str(round(yuzdelik5, 3)))
+                        #Referans Fark 1-0
                         pdf.set_xy(0,80)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'R3. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, 'R1. Pulse Suresi (sn):')
 
                         pdf.set_xy(32,80)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(reffark3b))
+                        pdf.cell(10, 50, str(reffark1b))
 
                         pdf.set_xy(43,80)
                         pdf.set_font('Arial', '', 9)
@@ -956,15 +992,15 @@ def main():
                         
                         pdf.set_xy(55,80)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[2]))
-                        #Referans Fark 3-4
+                        pdf.cell(10, 50, str(pulsebasinc[0]))
+                        #Referans Fark 1-2
                         pdf.set_xy(0,85)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'R4. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, 'R2. Pulse Suresi (sn):')
 
                         pdf.set_xy(32,85)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(reffark4b))
+                        pdf.cell(10, 50, str(reffark2b))
 
                         pdf.set_xy(43,85)
                         pdf.set_font('Arial', '', 9)
@@ -972,15 +1008,15 @@ def main():
                         
                         pdf.set_xy(55,85)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(pulsebasinc[3], 4)))
-                        #Referans Fark 4-5
+                        pdf.cell(10, 50, str(pulsebasinc[1]))
+                        #Referans Fark 2-3
                         pdf.set_xy(0,90)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'R5. Pulse Suresi (sn):')
+                        pdf.cell(10, 50, 'R3. Pulse Suresi (sn):')
 
                         pdf.set_xy(32,90)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(reffark5b))
+                        pdf.cell(10, 50, str(reffark3b))
 
                         pdf.set_xy(43,90)
                         pdf.set_font('Arial', '', 9)
@@ -988,76 +1024,124 @@ def main():
                         
                         pdf.set_xy(55,90)
                         pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(pulsebasinc[2]))
+                        #Referans Fark 3-4
+                        pdf.set_xy(0,95)
+                        pdf.set_font('Times', 'I', 10)
+                        pdf.cell(10, 50, 'R4. Pulse Suresi (sn):')
+
+                        pdf.set_xy(32,95)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(reffark4b))
+
+                        pdf.set_xy(43,95)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str("P (Bar)"))
+                        
+                        pdf.set_xy(55,95)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(round(pulsebasinc[3], 4)))
+                        #Referans Fark 4-5
+                        pdf.set_xy(0,100)
+                        pdf.set_font('Times', 'I', 10)
+                        pdf.cell(10, 50, 'R5. Pulse Suresi (sn):')
+
+                        pdf.set_xy(32,100)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(reffark5b))
+
+                        pdf.set_xy(43,100)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str("P (Bar)"))
+                        
+                        pdf.set_xy(55,100)
+                        pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str(pulsebasinc[4]))
 
                         #########Ortalama Değerler###
-                        pdf.set_xy(0,105)
+                        pdf.set_xy(0,115)
                         pdf.set_font('Times', 'B', 11)
                         pdf.cell(10, 50, 'ORTALAMA DEGERLER')
 
                         #######ORTALAMA HIZ ##########
-                        pdf.set_xy(0,110)
+                        pdf.set_xy(0,120)
                         pdf.set_font('Times', 'I', 10)
                         pdf.cell(10, 50, 'Test Ort. Hiz:')
 
-                        pdf.set_xy(32,110)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamahiz, 3))+" L/dk")
-
-                        pdf.set_xy(0,115)
-                        pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ref Ort. Hiz:')
-
-                        pdf.set_xy(32,115)
-                        pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamarefhiz, 3))+" L/dk")
-
-                        ###### Ortalama Hız Farkı ##########
-
-                        pdf.set_xy(0,120)
-                        pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ort. Hiz Farki:')
-
                         pdf.set_xy(32,120)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamahizfark, 3))+ " L/dk")
-
+                        pdf.cell(10, 50, str(round(ortalamahiz, 3))+" L/h")
 
                         pdf.set_xy(0,125)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ort. Pulse(sn):')
+                        pdf.cell(10, 50, 'Ref Ort. Hiz:')
 
                         pdf.set_xy(32,125)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamapulse, 3)))
+                        pdf.cell(10, 50, str(round(ortalamarefhiz, 3))+" L/h")
+
+                        ###### Ortalama Hız Farkı ##########
 
                         pdf.set_xy(0,130)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ort. Ref Pulse(sn):')
+                        pdf.cell(10, 50, 'Ort. Hiz Farki:')
 
                         pdf.set_xy(32,130)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(round(ortalamahizfark, 3))+ " L/h")
+
+
+                        pdf.set_xy(0,135)
+                        pdf.set_font('Times', 'I', 10)
+                        pdf.cell(10, 50, 'Ort. Pulse(sn):')
+
+                        pdf.set_xy(32,135)
+                        pdf.set_font('Arial', '', 9)
+                        pdf.cell(10, 50, str(round(ortalamapulse, 3)))
+
+                        pdf.set_xy(0,140)
+                        pdf.set_font('Times', 'I', 10)
+                        pdf.cell(10, 50, 'Ort. Ref Pulse(sn):')
+
+                        pdf.set_xy(32,140)
                         pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str(round(ortalamarefpulse, 3)))
 
 
 
                         #######ORTALAMA HATA ##########
-                        pdf.set_xy(0,135)
+                        pdf.set_xy(0,145)
                         pdf.set_font('Times', 'I', 10)
                         pdf.cell(10, 50, 'Ort. Hata %:')
 
-                        pdf.set_xy(32,135)
+                        pdf.set_xy(32,145)
                         pdf.set_font('Arial', '', 9)
                         pdf.cell(10, 50, str(round(ortalamayuzdelik, 3)))
                         
-                        if ortalamayuzdelik>=(-5) and ortalamayuzdelik<=5:
-                            pdf.set_xy(15,150)
+                        if ortalamayuzdelik>=(-hatadegeri) and ortalamayuzdelik<=(hatadegeri):
+                            pdf.set_xy(15,160)
                             pdf.set_font('Times', 'B', 10)
                             pdf.cell(10, 50, 'TESTTEN GECTI')
                         else:
-                            pdf.set_xy(15,150)
+                            pdf.set_xy(15,160)
                             pdf.set_font('Times', 'B', 10)
                             pdf.cell(10, 50, 'TESTTEN KALDI')
+                        
+                        ### REFERANS SAYAÇ REFERANS DEĞERLERİ
+                        if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
+                            pdf.set_xy(0,170)
+                            pdf.set_font('Times', 'B', 10)
+                            pdf.cell(10, 50, 'Basarili Test (R.Deger)')
+                            pdf.set_xy(42,170)
+                            pdf.set_font('Times', 'B', 10)
+                            pdf.cell(10, 50, str(round(ortalamarefhiz, 3)) )
+                        else:
+                            pdf.set_xy(0,170)
+                            pdf.set_font('Times', 'B', 10)
+                            pdf.cell(10, 50, 'Basarisiz Test (R.Deger): ')
+                            pdf.set_xy(42,170)
+                            pdf.set_font('Times', 'B', 10)
+                            pdf.cell(10, 50, str(round(ortalamarefhiz, 3)) )
 
                         pdf.output('PULSE.pdf', 'F')
                         print("Pulse Okuma Tamamlanmıştır")
@@ -1109,6 +1193,9 @@ def main():
                         global ortalamahiz
                         global ortalamarefhiz
                         global ortalamahizfark
+                        global basincsicaklikdegerleri
+                        global cihazsicaklikdegerleri
+                        global hatadegeri
                         
 
                         ######Fark Hesaplamaları 4 basamak####
@@ -1155,12 +1242,18 @@ def main():
                         ortalamarefpulse = (reffark1+reffark2+reffark3+reffark4+reffark5)/5
 
                         ####### Ortalamada saatlik hızı
-                        ortalamahiz= (60*10)/(ortalamapulse)
-                        ortalamarefhiz= (60*10)/(ortalamarefpulse)
+                        ortalamahiz= (60*60*10)/(ortalamapulse)
+                        ortalamarefhiz= (60*60*10)/(ortalamarefpulse)
 
                         ortalamahizfark= ortalamarefhiz-ortalamahiz
+                        ###Sıcaklığa göre hata oranı çıkartma
+                        if (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0]) <=2 and (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0])>=(-2):
+                            hatadegeri=5
 
-                        
+                        else:
+                            hatadegeri=7
+                        print("Hata Değeri:")
+                        print(hatadegeri)
                         bitis()
                     #############TESTGPIO############
                         
@@ -1218,6 +1311,9 @@ def main():
                         global refpressedTime
                         refpressedTime = datetime.now()        
                         print(refpressedTime, " pressed")
+
+                        
+
                     def refReleased():
                         global refpressedTime
                         global refreleasedTime
@@ -1242,6 +1338,8 @@ def main():
                                 global pulsebasinc
                                 global pressure
                                 global pressuresonuc
+                                global basincsicaklik
+                                global basincsicaklikdegerleri
 
                                 ###HESAPLAMALAR##
                                 refpulsetimelist+=[refa]
@@ -1260,11 +1358,14 @@ def main():
                                     sleep(1)
                                     pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                                     pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
-                                    
+                                    ##Basınç Sıcaklığı
+                                    basincsicaklik= (((pressure[4] <<16) | (pressure[5]<<8) | pressure[6])-4803703)/116593
                                     print(pressuresonuc)
+                                    print(basincsicaklik)
 
+                                    basincsicaklikdegerleri+=[basincsicaklik]
                                     pulsebasinc+=[pressuresonuc]
-                                    print(pulsebasinc[0])
+                                    print(pulsebasinc[0]) 
 
                                     anlikveri.config(text="Durum:"+str(refi)+". Referans Pulse Okundu",fg='black', bg='#dadadb',font=("Courier", 14))
                                     anlikveri.place(x=280,  y=230)
@@ -1274,6 +1375,7 @@ def main():
 
                                 except:
                                     pulsebasinc+=[0]
+                                    basincsicaklikdegerleri+=[0]
                                     anlikveri.config(text="Durum:"+str(refi)+". Referans Pulse Okundu",fg='black', bg='#dadadb',font=("Courier", 14))
                                     anlikveri.place(x=280,  y=230)
                                     if refi>=6 and i>=6:
@@ -1298,11 +1400,11 @@ def main():
                     
                     #basincgir.config(fg='green', bg='#dadadb')
                     ####
-                    
-                    button.when_pressed = checkPressed
-                    button.when_released = checkReleased
-                    refbutton.when_pressed = refPressed
-                    refbutton.when_released = refReleased
+                    ####### İnterup olarak okuduğumuz için released ve pressed değişti
+                    button.when_pressed = checkReleased 
+                    button.when_released = checkPressed
+                    refbutton.when_pressed = refReleased
+                    refbutton.when_released = refPressed
                     print(serinoliste[0])
                 def kacaktestiyap():
                     global basinclist
@@ -1364,7 +1466,7 @@ def main():
 
                                 def servis():
                                     print("Yeniden Başlatılacak")
-                                    #os.system('reboot')
+                                    os.system('reboot')
 
                                 reset2=tk.Button(bas,text='Yeni Test', fg='black',bg='#299584',command=servis)
                                 reset2.place(x=320,y=240, width=130, height=40)
@@ -1388,20 +1490,29 @@ def main():
                     global anlikveri
                     global islembaslat
                     global kacaktestbutonu
-                    
-                    
+                    global cihazsicaklik
+                    global tempDataRaw
+                    global cihazsicaklikdegerleri
 
                     
                     anlikveri.place_forget()
                     #####BASINC HESAPLAMA####
                     bus = smbus.SMBus(1)
                     try:
+                        ##Sıcaklık değeri
+                        cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
+                        sleep(1)
 
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                         pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
                         sleep(1)
+
+                        cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
+                        sleep(1)
+                        
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                         pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                        
 
                         print(pressuresonuc)
                         if pressuresonuc<(0.9):
@@ -1414,12 +1525,22 @@ def main():
                             basincgir.config(font=("Bold", 12))
                             basincgir.place(x=120,y=180)
                             
+                            tempDataRaw = int.from_bytes(cihazsicaklik, 'big')
+                            if tempDataRaw >= 0x8000:
+                                tempDataRaw=(-256.0) + (tempDataRaw - 0x8000) * 7.8125e-3 # One LSB equals 7.812 mdegC
+                            else:
+                                tempDataRaw=tempDataRaw * 7.8125e-3 # One LSB equals 7.812 mdegC
+
+                            print(tempDataRaw)
+                            cihazsicaklikdegerleri+=[tempDataRaw]
+
+
 
                             
                             
-                            anlikveri=tk.Label(bas, text='İlk Basınç Okundu: '+str(basinclist[0]),fg='green', bg='#dadadb')
+                            anlikveri=tk.Label(bas, text='İlk Basınç Okundu(Bar): '+str(basinclist[0])+" Sıcaklık(C): "+str(cihazsicaklikdegerleri[0]),fg='green', bg='#dadadb')
                             anlikveri.config(font=("Courier", 12))
-                            anlikveri.place(x=280,y=390)
+                            anlikveri.place(x=170,y=390)
                             
                             ###buton gizleme
                             ac.place_forget()
@@ -1431,7 +1552,7 @@ def main():
                             kacaktestbutonu.place(x=320,y=210, height=40, width=110)
                     except:
             
-                        anlikveri=tk.Label(bas, text='Birinci Basınç Değeri Okunamadı Tekrar Tıklayın',fg='red', bg='#dadadb')
+                        anlikveri=tk.Label(bas, text='Birinci Basınç Değeri & Sıcaklık Okunamadı Tekrar Tıklayın',fg='red', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
                         anlikveri.place(x=200,y=390)
                 

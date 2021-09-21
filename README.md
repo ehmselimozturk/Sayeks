@@ -18,7 +18,6 @@ cd Sayeks/
 
 unzip PythonDriver.zip
 
-cd PythonDriver/
 
 sudo su
 

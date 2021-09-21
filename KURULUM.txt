@@ -8,4 +8,6 @@ chmod u=rwxst SETUP.sh
 
 ##Tar zip cıkarma komutu
 tar xvzf SETUPVHS.tar.gz
+unzip dosya.zip
+
 ###

@@ -16,6 +16,8 @@ sudo chmod u=rwxst SETUP.sh
 
 cd Sayeks/
 
+unzip PythonDriver.zip
+
 cd PythonDriver/
 
 sudo su

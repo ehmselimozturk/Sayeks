@@ -707,7 +707,7 @@ def main():
                         global acikhavabasinci
                         global gercekbasinc
                         
-                        gercekbasinc= round((basinclist[0]-acikhavabasinci[0]),3)
+                        gercekbasinc= round((basinclist[0]-acikhavabasinci[0]),4)
                         f = open('log.txt','a')
                         f.write("VHS ELEKTRONİK PULSE OKUMA\n\n")
                         f = open('log.txt','a')
@@ -801,11 +801,11 @@ def main():
 
                         f.write("Cihaz Sıcaklığı (C):  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(cihazsicaklikdegerleri[0],3))+"\n")
+                        f.write(str(round(cihazsicaklikdegerleri[0],2))+"\n")
                         
                         f.write("Ortam (Gaz) Sıcaklığı (C):  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(basincsicaklikdegerleri[0],3))+"\n\n\n")
+                        f.write(str(round(basincsicaklikdegerleri[0],2))+"\n\n\n")
                         
                         
                         
@@ -891,7 +891,7 @@ def main():
 
                         pdf.set_xy(30,35)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(cihazsicaklikdegerleri[0],3)))
+                        pdf.cell(10, 50, str(round(cihazsicaklikdegerleri[0],2)))
 
                         pdf.set_xy(0,40)
                         pdf.set_font('Times', 'B', 10)
@@ -899,7 +899,7 @@ def main():
 
                         pdf.set_xy(35,40)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(basincsicaklikdegerleri[0],3)))
+                        pdf.cell(10, 50, str(round(basincsicaklikdegerleri[0],2)))
                         
                     
                         #PULSE FARKLARI
@@ -1003,7 +1003,7 @@ def main():
                         
                         pdf.set_xy(55,80)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[0]))
+                        pdf.cell(10, 50, str(round(pulsebasinc[0], 4)))
                         #Referans Fark 1-2
                         pdf.set_xy(0,85)
                         pdf.set_font('Times', 'I', 10)
@@ -1019,7 +1019,7 @@ def main():
                         
                         pdf.set_xy(55,85)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[1]))
+                        pdf.cell(10, 50, str(round(pulsebasinc[1], 4)))
                         #Referans Fark 2-3
                         pdf.set_xy(0,90)
                         pdf.set_font('Times', 'I', 10)
@@ -1035,7 +1035,7 @@ def main():
                         
                         pdf.set_xy(55,90)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[2]))
+                        pdf.cell(10, 50, str(round(pulsebasinc[2], 4)))
                         #Referans Fark 3-4
                         pdf.set_xy(0,95)
                         pdf.set_font('Times', 'I', 10)
@@ -1067,7 +1067,7 @@ def main():
                         
                         pdf.set_xy(55,100)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(pulsebasinc[4]))
+                        pdf.cell(10, 50, str(round(pulsebasinc[4], 4)))
 
                         #########Ortalama Değerler###
                         pdf.set_xy(0,115)
@@ -1139,13 +1139,14 @@ def main():
                             pdf.cell(10, 50, 'TESTTEN KALDI')
                         
                         ### REFERANS SAYAÇ REFERANS DEĞERLERİ
+                        
                         if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
                             pdf.set_xy(0,170)
                             pdf.set_font('Times', 'B', 10)
                             pdf.cell(10, 50, 'Basarili Test (R.Deger): 200<                <1800')
-                            pdf.set_xy(50,170)
+                            pdf.set_xy(48,170)
                             pdf.set_font('Times', 'B', 10)
-                            pdf.cell(10, 44, str(round(ortalamarefhiz, 3)) )
+                            pdf.cell(10, 50, str(round(ortalamarefhiz, 3)) )
                         else:
                             pdf.set_xy(0,170)
                             pdf.set_font('Times', 'B', 10)
@@ -1454,12 +1455,12 @@ def main():
 
                             
                             
-                            anlikveri=tk.Label(bas, text='İkinci Basınç Okundu: '+str(basinclist[1]),fg='green', bg='#dadadb')
+                            anlikveri=tk.Label(bas, text='İkinci Basınç Okundu (Bar): '+str(round(basinclist[1], 4))+"   ",fg='green', bg='#dadadb')
                             anlikveri.config(font=("Courier", 12))
                             anlikveri.place(x=280,y=390)
 
 
-                            if basinclist[0]-basinclist[1] < 0.006 and basinclist[0]-basinclist[1] > -(0.006):
+                            if basinclist[0]-basinclist[1] < 0.01 and basinclist[0]-basinclist[1] > -(0.01):
                                 basincgir.config(text="KAÇAK YOK \n !!!GİRİŞ VE ÇIKIŞ VANALARINI AÇIN!!! ve Testi Başlatınız", fg='green', bg='#dadadb')
                                 basincgir.place(x=170,y=180)
                                 ###buton gizleme
@@ -1546,7 +1547,7 @@ def main():
 
                             
                             
-                            anlikveri=tk.Label(bas, text='İlk Basınç Okundu(Bar): '+str(basinclist[0])+" Sıcaklık(C): "+str(cihazsicaklikdegerleri[0]),fg='green', bg='#dadadb')
+                            anlikveri=tk.Label(bas, text='İlk Basınç Okundu(Bar): '+str(round(basinclist[0],4))+" Sıcaklık(C): "+str(round(cihazsicaklikdegerleri[0], 2)),fg='green', bg='#dadadb')
                             anlikveri.config(font=("Courier", 12))
                             anlikveri.place(x=170,y=390)
                             
@@ -1617,7 +1618,7 @@ def main():
 
                 acikhavabasinci+=[pressuresonuc]
                 
-                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(acikhavabasinci[0]),fg='green', bg='#dadadb')
+                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(round(acikhavabasinci[0], 4)),fg='green', bg='#dadadb')
                 anlikveri.config(font=("Courier", 12))
                 anlikveri.place(x=210,y=370)
             except:

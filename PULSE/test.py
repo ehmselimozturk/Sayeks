@@ -59,6 +59,7 @@ basinclist=[]
 pulsebasinc=[]
 cihazsicaklikdegerleri= []
 basincsicaklikdegerleri = []
+acikhavabasinci= []
 ####Pulse Süreleri####
 fark1b = 0
 fark2b = 0
@@ -86,6 +87,7 @@ cihazsicaklik = 0
 tempDataRaw = 0
 basincsicaklik = 0
 hatadegeri= 0
+gercekbasinc= 0
 
 def main():
     global datesystem
@@ -108,9 +110,9 @@ def main():
     
     
     #serinogir.config(width=200)
-    serinogir=tk.Label(bas, text='1)Sayaç Seri No Giriniz',fg='black', bg='#dadadb')
+    serinogir=tk.Label(bas, text='!Gaz bağlantılarını yapmayınız, \n !Sadece çıkış hortumunu bağlayınız, \n !Çıkış vanasını açınız, \n 1)Sayaç Seri No Giriniz ',fg='black', bg='#dadadb')
     serinogir.config(font=("Courier", 12))
-    serinogir.place(x=200,y=180)
+    serinogir.place(x=120,y=110)
     
    
     
@@ -120,6 +122,9 @@ def main():
         global serinumarasi
         global anlikveri
         global tarih
+        global pressuresonuc
+        global acikhavabasinci
+        global address
         serinumarasi=serino.get()
         
 
@@ -151,15 +156,15 @@ def main():
             clear.place_forget()
             Decimal.place_forget()
             
-            
+           
            
             anlikveri=tk.Label(bas, text='Sayaç Seri No:'+str(serinumarasi)+'          ',fg='green', bg='#dadadb')
             anlikveri.config(font=("Courier", 12))
             anlikveri.place(x=320,y=390)
 
-            tarih=tk.Label(bas, text='2)Sistem Tarihi Yanlışsa "Tarih Gir" \n Butonuna Basınız. Doğru ise Onaylayınız.',fg='black', bg='#dadadb')
+            tarih=tk.Label(bas, text='!!!Gaz bağlantılarını yapınız ve çıkıştaki gazı imha ediniz!!!\n\n2)Sistem Tarihi yanlışsa "Tarih Gir" \n butonuna basınız. Doğru ise onaylayınız.',fg='black', bg='#dadadb')
             tarih.config(font=("Courier", 12))
-            tarih.place(x=200,y=180)
+            tarih.place(x=120,y=150)
 
             def tarihisteme():
             
@@ -289,14 +294,16 @@ def main():
                         tarihbilgisi=cal.get_date()
                         tarihliste+=[cal.get_date()]
 
+                        
+
                         anlikveri=tk.Label(bas, text='Sistem Tarihi:'+str(tarihbilgisi)+ " " + str(saatbilgisi)+'    ',fg='green', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
                         anlikveri.place(x=280,y=390)
 
                         print(str(saatbilgisi))
                         print(saatliste[0])
-
                         hatbasinc()
+                        
                         
                     
 
@@ -305,7 +312,7 @@ def main():
 
 
             tarihbuton=tk.Button(bas, text='Tarih Gir', fg='black', bg='#299584',height=1, width=6, command=tarihisteme)
-            tarihbuton.place(x=240,y=240,height=50, width=110)
+            tarihbuton.place(x=280,y=240,height=50, width=110)
             
             def hatbasinc():
             
@@ -361,7 +368,7 @@ def main():
                         #logovhs = ImageTk.PhotoImage(Image.open('vhs.png'))
                         bilgi=tk.Label(form, text='',fg='black', bg='#dadadb')
                         bilgi.config(font=("Courier", 10))
-                        bilgi.place(x=200,y=390)
+                        bilgi.place(x=300,y=300)
                         global fark1b
                         global fark2b
                         global fark3b
@@ -413,6 +420,8 @@ def main():
                             global hatadegeri
                             global cihazsicaklikdegerleri
                             global basincsicaklikdegerleri
+                            global acikhavabasinci
+                            global gercekbasinc
                             
 
                             label1=tk.Label(form, text='Sayaç Seri No:'+serinumarasi,fg='green', bg='#dadadb')
@@ -563,7 +572,7 @@ def main():
 
                             label1=tk.Label(form, text='Basınç (Bar):',fg='black')
                             label1.place(x=520,y=50)
-                            label1=tk.Label(form, text=str(basinclist[0]),fg='black',bg='#dadadb')
+                            label1=tk.Label(form, text=str(gercekbasinc),fg='black',bg='#dadadb')
                             label1.place(x=625,y=50)
                             ### 4. sekm  test ort hız
 
@@ -695,8 +704,10 @@ def main():
                         global basincsicaklik
                         global cihazsicaklikdegerleri
                         global basincsicaklikdegerleri
+                        global acikhavabasinci
+                        global gercekbasinc
                         
-
+                        gercekbasinc= round((basinclist[0]-acikhavabasinci[0]),3)
                         f = open('log.txt','a')
                         f.write("VHS ELEKTRONİK PULSE OKUMA\n\n")
                         f = open('log.txt','a')
@@ -711,7 +722,7 @@ def main():
                         f.write("Uygulama Tarihi:"+str(tarihliste[0])+"  "+ str(saatliste[0])+"\n\n")
                         
                         f = open('log.txt','a')
-                        f.write("Basınç:"+str(basinclist[0])+"  "+"Bar"+"\n\n")
+                        f.write("Basınç (Bar):"+str(gercekbasinc)+"\n\n")
                     
                     
                     
@@ -772,29 +783,29 @@ def main():
                         f = open('log.txt','a')
                         f.write(str(round(ortalamarefpulse, 3))+"\n")
                         
-                        f.write("Ortalama Hata Oranı:  ")
+                        f.write("Ortalama Hata Oranı(%):  ")
                         f = open('log.txt','a')
-                        f.write("% "+ str(round(ortalamayuzdelik, 3))+"\n")
+                        f.write(str(round(ortalamayuzdelik, 3))+"\n")
                         
-                        f.write("Test Ort. Hız:  ")
+                        f.write("Test Ort. Hız (L/h):  ")
                         f = open('log.txt','a')
-                        f.write(str(round(ortalamahiz, 3))+" L/h"+"\n")
+                        f.write(str(round(ortalamahiz, 3))+"\n")
 
-                        f.write("Ref Ort. Hız:  ")
+                        f.write("Ref Ort. Hız (L/h):  ")
                         f = open('log.txt','a')
-                        f.write(str(round(ortalamarefhiz, 3))+" L/h"+"\n")
+                        f.write(str(round(ortalamarefhiz, 3))+"\n")
 
-                        f.write("Ort. Hız Farkı:  ")
+                        f.write("Ort. Hız Farkı (L/h):  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(ortalamahizfark,3))+" L/h"+"\n")
+                        f.write(str(round(ortalamahizfark,3))+"\n")
 
-                        f.write("Cihaz Sıcaklığı:  ")
+                        f.write("Cihaz Sıcaklığı (C):  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(cihazsicaklikdegerleri[0],3))+" C"+"\n")
+                        f.write(str(round(cihazsicaklikdegerleri[0],3))+"\n")
                         
-                        f.write("Ortam (Gaz) Sıcaklığı:  ")
+                        f.write("Ortam (Gaz) Sıcaklığı (C):  ")
                         f = open('log.txt','a') 
-                        f.write(str(round(basincsicaklikdegerleri[0],3))+" C"+"\n\n\n")
+                        f.write(str(round(basincsicaklikdegerleri[0],3))+"\n\n\n")
                         
                         
                         
@@ -815,11 +826,11 @@ def main():
                         if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
                             f.write("Başarılı Test (Referans Değer): ")
                             f = open('log.txt','a')
-                            f.write( str(round(ortalamarefhiz, 3))+"L/h\n\n\n")
+                            f.write("200 < "+ str(round(ortalamarefhiz, 3))+" L/h < 1800\n\n\n")
                         else:
                             f.write("Başarısız Test (Referans Değer): ")
                             f = open('log.txt','a')
-                            f.write( str(round(ortalamarefhiz, 3))+"L/h\n\n\n")
+                            f.write(str(round(ortalamarefhiz, 3))+"L/h\n\n\n")
 
                         f.close()
                         shutil.copy("/home/pi/log.txt", "/home/pi/Desktop/PULSE/")
@@ -860,11 +871,11 @@ def main():
                         
                         pdf.set_xy(0,25)
                         pdf.set_font('Times', 'B', 10)
-                        pdf.cell(10, 50, 'Basinc Degeri:')
+                        pdf.cell(10, 50, 'Basinc (Bar):')
 
                         pdf.set_xy(30,25)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(basinclist[0])+" Bar")
+                        pdf.cell(10, 50, str(gercekbasinc))
 
                         pdf.set_xy(0,30)
                         pdf.set_font('Times', 'B', 10)
@@ -1066,29 +1077,29 @@ def main():
                         #######ORTALAMA HIZ ##########
                         pdf.set_xy(0,120)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Test Ort. Hiz:')
+                        pdf.cell(10, 50, 'Test Ort. Hiz (L/h):')
 
                         pdf.set_xy(32,120)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamahiz, 3))+" L/h")
+                        pdf.cell(10, 50, str(round(ortalamahiz, 3)))
 
                         pdf.set_xy(0,125)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ref Ort. Hiz:')
+                        pdf.cell(10, 50, 'Ref Ort. Hiz (L/h):')
 
                         pdf.set_xy(32,125)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamarefhiz, 3))+" L/h")
+                        pdf.cell(10, 50, str(round(ortalamarefhiz, 3)))
 
                         ###### Ortalama Hız Farkı ##########
 
                         pdf.set_xy(0,130)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ort. Hiz Farki:')
+                        pdf.cell(10, 50, 'Ort. Hiz Farki (L/h):')
 
                         pdf.set_xy(32,130)
                         pdf.set_font('Arial', '', 9)
-                        pdf.cell(10, 50, str(round(ortalamahizfark, 3))+ " L/h")
+                        pdf.cell(10, 50, str(round(ortalamahizfark, 3)))
 
 
                         pdf.set_xy(0,135)
@@ -1112,7 +1123,7 @@ def main():
                         #######ORTALAMA HATA ##########
                         pdf.set_xy(0,145)
                         pdf.set_font('Times', 'I', 10)
-                        pdf.cell(10, 50, 'Ort. Hata %:')
+                        pdf.cell(10, 50, 'Ort. Hata (%):')
 
                         pdf.set_xy(32,145)
                         pdf.set_font('Arial', '', 9)
@@ -1131,10 +1142,10 @@ def main():
                         if ortalamarefhiz <= 1800 and ortalamarefhiz >= 200:
                             pdf.set_xy(0,170)
                             pdf.set_font('Times', 'B', 10)
-                            pdf.cell(10, 50, 'Basarili Test (R.Deger)')
-                            pdf.set_xy(42,170)
+                            pdf.cell(10, 50, 'Basarili Test (R.Deger): 200<                <1800')
+                            pdf.set_xy(50,170)
                             pdf.set_font('Times', 'B', 10)
-                            pdf.cell(10, 50, str(round(ortalamarefhiz, 3)) )
+                            pdf.cell(10, 44, str(round(ortalamarefhiz, 3)) )
                         else:
                             pdf.set_xy(0,170)
                             pdf.set_font('Times', 'B', 10)
@@ -1247,7 +1258,7 @@ def main():
 
                         ortalamahizfark= ortalamarefhiz-ortalamahiz
                         ###Sıcaklığa göre hata oranı çıkartma
-                        if (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0]) <=2 and (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0])>=(-2):
+                        if (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0]) <=15 and (cihazsicaklikdegerleri[0]-basincsicaklikdegerleri[0])>=(-15):
                             hatadegeri=5
 
                         else:
@@ -1354,12 +1365,12 @@ def main():
                                     bus = smbus.SMBus(1)
 
                                     pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                                    pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                                    pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                                     sleep(1)
                                     pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                                    pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                                    pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                                     ##Basınç Sıcaklığı
-                                    basincsicaklik= (((pressure[4] <<16) | (pressure[5]<<8) | pressure[6])-4803703)/116593
+                                    basincsicaklik= (((pressure[4] <<16) | (pressure[5]<<8) | pressure[6])-4603703)/116593
                                     print(pressuresonuc)
                                     print(basincsicaklik)
 
@@ -1428,10 +1439,10 @@ def main():
                     try:
 
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                         sleep(1)
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                         print(pressuresonuc)
                         if pressuresonuc<(0.9):
                                 print("Basınç Yanlış")
@@ -1447,9 +1458,6 @@ def main():
                             anlikveri.config(font=("Courier", 12))
                             anlikveri.place(x=280,y=390)
 
-                            
-                            
-                            
 
                             if basinclist[0]-basinclist[1] < 0.006 and basinclist[0]-basinclist[1] > -(0.006):
                                 basincgir.config(text="KAÇAK YOK \n !!!GİRİŞ VE ÇIKIŞ VANALARINI AÇIN!!! ve Testi Başlatınız", fg='green', bg='#dadadb')
@@ -1479,7 +1487,7 @@ def main():
             
                         anlikveri=tk.Label(bas, text='İkinci Basınç Değeri Okunamadı Tekrar Tıklayınız',fg='red', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
-                        anlikveri.place(x=200,y=390)
+                        anlikveri.place(x=180,y=390)
 
                 def basinchesaplama():
 
@@ -1504,14 +1512,14 @@ def main():
                         sleep(1)
 
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                         sleep(1)
 
                         cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
                         sleep(1)
                         
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
-                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-500000)/8000000
+                        pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
                         
 
                         print(pressuresonuc)
@@ -1554,7 +1562,7 @@ def main():
             
                         anlikveri=tk.Label(bas, text='Birinci Basınç Değeri & Sıcaklık Okunamadı Tekrar Tıklayın',fg='red', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
-                        anlikveri.place(x=200,y=390)
+                        anlikveri.place(x=180,y=390)
                 
 
                 ac=tk.Button(bas, text='Basınç Testi', fg='black', bg='#299584', command=basinchesaplama)
@@ -1593,7 +1601,37 @@ def main():
                 
             
             onay2=tk.Button(bas, text='Onayla', fg='black', bg='#299584',height=1, width=6, command=adim2)
-            onay2.place(x=360,y=240,height=50, width=110)
+            onay2.place(x=400,y=240,height=50, width=110)
+
+            bus = smbus.SMBus(1)
+            
+
+            try:
+
+                pressure=bus.read_i2c_block_data(address, 0xAA, 7)
+                
+                sleep(1)
+                
+                pressure=bus.read_i2c_block_data(address, 0xAA, 7)
+                pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
+
+                acikhavabasinci+=[pressuresonuc]
+                
+                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(acikhavabasinci[0]),fg='green', bg='#dadadb')
+                anlikveri.config(font=("Courier", 12))
+                anlikveri.place(x=210,y=370)
+            except:
+
+                acikhavabasinci+=[0]
+                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(acikhavabasinci[0]),fg='green', bg='#dadadb')
+                anlikveri.config(font=("Courier", 12))
+                anlikveri.place(x=230,y=370)
+
+            print("devam ediyor")
+
+
+
+        
 
         
 

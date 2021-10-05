@@ -369,6 +369,11 @@ def main():
                         bilgi=tk.Label(form, text='',fg='black', bg='#dadadb')
                         bilgi.config(font=("Courier", 10))
                         bilgi.place(x=300,y=300)
+
+                        logtext=tk.Label(form, text='',fg='black', bg='#dadadb')
+                        logtext.config(font=("Courier", 10))
+                        logtext.place(x=200,y=300)
+
                         global fark1b
                         global fark2b
                         global fark3b
@@ -382,6 +387,8 @@ def main():
                         global tarihliste
                         global saatliste
                     
+                        label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınızve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
+                        label1.place(x=105,y=230)
                         def hesapla():
                             global fark1b
                             global fark2b
@@ -608,20 +615,29 @@ def main():
                             label1.place(x=625,y=200)
 
                         #ARAYUZ SONUC BUTTON
-                        buton=tk.Button(form, text='Sonuc Al', fg='black', bg='#299584', command=hesapla)
-                        buton.place(x=180,y=1)
+                        buton=tk.Button(form, text='Sonuç', fg='black', bg='#299584', command=hesapla)
+                        buton.place(x=130,y=1)
                         
-                        #def logcopy():
-                            #shutil.copy("/home/pi/log.txt", "/home/pi/Desktop/PULSE/")
-                            #bilgi.config(text='LOG Kopyalandı',fg='black')    
+                        def logcopy():
+                            try:
+                                logtext.config(text='', fg='red')
+                                
+                                shutil.copy("/home/pi/log.txt", "/media/pi/TAKTES")
+                                bilgi.config(text='LOG Kopyalandı',fg='black')  
+                            except:
+                                bilgi.config(text='',fg='black')  
+
+                                #bilgi.place_forget()
+                                logtext.config(text='LOG Kopyalanamadı! \n USB Belleğin bağlantısını kontrol ediniz!', fg='red')
+                                
                         
                         #ARAYUZ LOG BUTTON
-                        #export=tk.Button(form, text='Log Kopyala', fg='black', bg='#299584', command=logcopy)
-                        #export.place(x=280,y=1)
+                        export=tk.Button(form, text='Log Kopyala', fg='black', bg='#299584', command=logcopy)
+                        export.place(x=310,y=1)
 
 
                         reset2=tk.Button(form,text='Yeni Test', fg='black',bg='#299584',command=yenidentest)
-                        reset2.place(x=280,y=1)
+                        reset2.place(x=210,y=1)
                         def resettxt():
                             #label1=tk.Label(form, text='LOG temizlenmiştir.',fg='black', bg='red')
                             # label1.place(x=200,y=390)
@@ -632,7 +648,7 @@ def main():
                             shutil.copy("/home/pi/log.txt", "/home/pi/Desktop/PULSE/")
                         #ARAYUZ RES BUTTON   
                         export=tk.Button(form, text='LOG Temizle', fg='red', bg='#299584', command=resettxt)
-                        export.place(x=400,y=1)
+                        export.place(x=430,y=1)
                         #ARAYUZ PRİNT BUTTON
                         def printer():
                             #label1=tk.Label(form, text='Yazıcıya Gonderildi',fg='black', bg='yellow')
@@ -647,7 +663,7 @@ def main():
 
                         ##PRİNTER BUTON
                         export=tk.Button(form, text='YAZDIR', fg='black', bg='#299584', command=printer)
-                        export.place(x=520,y=1)
+                        export.place(x=550,y=1)
                 
                         form.mainloop()
                         pause()
@@ -837,8 +853,7 @@ def main():
                         #TEST
 
                         pulsef1 =  pulsetimelist[1]-pulsetimelist[0]
-                        print(pulsef1)
-                        print("pulsef geldi")
+                        
                         #test bitis
 
                         #PDF OLUSTURMA

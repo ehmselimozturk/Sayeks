@@ -97,7 +97,7 @@ def main():
     global serino
     print("Uygulama işleme başladı")
     bas=tk.Tk()
-    bas.title("Sayaç Ekspert")
+    bas.title("TAKTES")
     bas.geometry('500x500')
     bas.config(bg='#dadadb')
     bas.minsize(800,480)
@@ -110,7 +110,7 @@ def main():
     
     
     #serinogir.config(width=200)
-    serinogir=tk.Label(bas, text='!Gaz bağlantılarını yapmayınız, \n !Sadece çıkış hortumunu bağlayınız, \n !Çıkış vanasını açınız, \n 1)Sayaç Seri No Giriniz ',fg='black', bg='#dadadb')
+    serinogir=tk.Label(bas, text='!Gaz bağlantılarını yapmayınız, \n !Giriş ve çıkış hortumunu bağlayınız, \n !Vanaları açınız, \n 1)Sayaç Seri No Giriniz ',fg='black', bg='#dadadb')
     serinogir.config(font=("Courier", 12))
     serinogir.place(x=120,y=110)
     
@@ -125,6 +125,8 @@ def main():
         global pressuresonuc
         global acikhavabasinci
         global address
+        global cihazsicaklikdegerleri
+        global cihazsicaklik
         serinumarasi=serino.get()
         
 
@@ -155,16 +157,19 @@ def main():
             button0.place_forget()
             clear.place_forget()
             Decimal.place_forget()
+            ##BURAYA GEL
             
-           
+            
+                
+            
            
             anlikveri=tk.Label(bas, text='Sayaç Seri No:'+str(serinumarasi)+'          ',fg='green', bg='#dadadb')
             anlikveri.config(font=("Courier", 12))
             anlikveri.place(x=320,y=390)
 
-            tarih=tk.Label(bas, text='!!!Gaz bağlantılarını yapınız ve çıkıştaki gazı imha ediniz!!!\n\n2)Sistem Tarihi yanlışsa "Tarih Gir" \n butonuna basınız. Doğru ise onaylayınız.',fg='black', bg='#dadadb')
+            tarih=tk.Label(bas, text='!!!Giriş gaz bağlantısını yapınız çıkış vanası kapalı olmalı!!!\n\n2)Sistem Tarihi yanlışsa "Tarih Gir" \n butonuna basınız. Doğru ise onaylayınız.',fg='black', bg='#dadadb')
             tarih.config(font=("Courier", 12))
-            tarih.place(x=120,y=150)
+            tarih.place(x=140,y=150)
 
             def tarihisteme():
             
@@ -179,11 +184,11 @@ def main():
                 tarih.place_forget()
 
                 cal = Calendar(bas, selectmode="day", year=2021, month=1, day=13)
-                cal.place(x=150, y=40, height=200, width=300)
+                cal.place(x=150, y=50, height=200, width=300)
 
                 saatgir=tk.Label(bas, text='Saat Bilgisini Giriniz(Saat:Dakika)',fg='black', bg='#dadadb')
                 saatgir.config(font=("Courier", 12))
-                saatgir.place(x=150, y=250)
+                saatgir.place(x=150, y=260)
                 #tarihgir=tk.Entry(width=20)
                 #tarihgir.place(x=150,y=220)
 
@@ -209,7 +214,7 @@ def main():
                     equation2.set("")
                 equation2 = tk.StringVar()
                 tarihgir = tk.Entry(bas, textvariable=equation2)
-                tarihgir.place(x=150,y=270, height=30, width=200) 
+                tarihgir.place(x=150,y=280, height=30, width=200) 
 
 
                 button1b = tk.Button(bas, text=' 1 ', fg='black', bg='#299584',command=lambda: pressb(1), height=3, width=5)
@@ -308,7 +313,7 @@ def main():
                     
 
                 tarihal=tk.Button(bas, text='Onayla', fg='black', bg='#299584',height=1, width=6, command=tarihalma)
-                tarihal.place(x=350,y=270,height=30, width=110)
+                tarihal.place(x=350,y=280,height=30, width=110)
 
 
             tarihbuton=tk.Button(bas, text='Tarih Gir', fg='black', bg='#299584',height=1, width=6, command=tarihisteme)
@@ -356,11 +361,12 @@ def main():
                     ##Baslat butonunu kaybetme###
                     islembaslat.place_forget()
                     basincgir.place_forget()
+                    shutil.copy("/home/pi/PULSE.pdf", "/home/pi/Desktop/PULSE/")
 
                     def arayuz1():
                         
                         form=tk.Tk()
-                        form.title("SAYAC EKSPERT")
+                        form.title("TAKTES SONUC")
                         form.geometry('500x500')
                         form.config(bg='#dadadb')
                         form.minsize(800,480)
@@ -388,7 +394,7 @@ def main():
                         global saatliste
                     
                         label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınızve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
-                        label1.place(x=105,y=230)
+                        label1.place(x=120,y=230)
                         def hesapla():
                             global fark1b
                             global fark2b
@@ -725,7 +731,7 @@ def main():
                         
                         gercekbasinc= round((basinclist[0]-acikhavabasinci[0]),4)
                         f = open('log.txt','a')
-                        f.write("VHS ELEKTRONİK PULSE OKUMA\n\n")
+                        f.write("AKSES SAYAÇ TEST\n\n")
                         f = open('log.txt','a')
                         f.write("Sayaç Seri Numarası:"+str(serinoliste[0])+"\n\n\n")
                         f = open('log.txt','a')
@@ -862,7 +868,7 @@ def main():
                         pdf.image('/home/pi/Desktop/PULSE/vhs.png',0,8,30)
                         pdf.set_xy(30,0)
                         pdf.set_font('Arial', 'B', 15)
-                        pdf.cell(10, 40, 'Pulse Okuma')
+                        pdf.cell(10, 40, '')
                         
                         #PULSE TARİHLERİ
                         pdf.set_xy(0,10)
@@ -1159,7 +1165,7 @@ def main():
                             pdf.set_xy(0,170)
                             pdf.set_font('Times', 'B', 10)
                             pdf.cell(10, 50, 'Basarili Test (R.Deger): 200<                <1800')
-                            pdf.set_xy(48,170)
+                            pdf.set_xy(45,170)
                             pdf.set_font('Times', 'B', 10)
                             pdf.cell(10, 50, str(round(ortalamarefhiz, 3)) )
                         else:
@@ -1470,19 +1476,19 @@ def main():
 
                             
                             
-                            anlikveri=tk.Label(bas, text='İkinci Basınç Okundu (Bar): '+str(round(basinclist[1], 4))+"   ",fg='green', bg='#dadadb')
+                            anlikveri=tk.Label(bas, text='İkinci basınç okundu (Bar): '+str(round(basinclist[1], 4))+"   ",fg='green', bg='#dadadb')
                             anlikveri.config(font=("Courier", 12))
                             anlikveri.place(x=280,y=390)
 
 
                             if basinclist[0]-basinclist[1] < 0.01 and basinclist[0]-basinclist[1] > -(0.01):
-                                basincgir.config(text="KAÇAK YOK \n !!!GİRİŞ VE ÇIKIŞ VANALARINI AÇIN!!! ve Testi Başlatınız", fg='green', bg='#dadadb')
-                                basincgir.place(x=170,y=180)
+                                basincgir.config(text="KAÇAK YOK \n !!!GİRİŞ VE ÇIKIŞ VANALARINI AÇIN, GAZI İMHA EDİN!!! \n Pulse Modülünü Bağlayın ve Testi Başlatınız", fg='green', bg='#dadadb')
+                                basincgir.place(x=170,y=150)
                                 ###buton gizleme
                                 kacaktestbutonu.place_forget()
                                 ###########
                                 islembaslat=tk.Button(bas, text='Testi Baslat', fg='black', bg='#299584', command=baslangic)
-                                islembaslat.place(x=320,y=220, width=130, height=40)
+                                islembaslat.place(x=320,y=220, width=130, height=50)
                             else:
                                 basincgir.config(text="KAÇAK ALGILANDI! \n TAKTES Servisinizle Görüşün veya Tekrar Test Ediniz\n"+ "Basınç Farkı:"+str(round((basinclist[0]-basinclist[1]), 5))+" Bar", fg='red', bg='#dadadb')
                                 basincgir.place(x=170,y=180)
@@ -1501,7 +1507,7 @@ def main():
                             
                     except:
             
-                        anlikveri=tk.Label(bas, text='İkinci Basınç Değeri Okunamadı Tekrar Tıklayınız',fg='red', bg='#dadadb')
+                        anlikveri=tk.Label(bas, text='İkinci basınç değeri okunamadı tekrar deneyiniz.',fg='red', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
                         anlikveri.place(x=180,y=390)
 
@@ -1524,15 +1530,16 @@ def main():
                     bus = smbus.SMBus(1)
                     try:
                         ##Sıcaklık değeri
-                        cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
-                        sleep(1)
+                        #cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
+                        #sleep(1)
 
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                         pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
+                        
                         sleep(1)
 
-                        cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
-                        sleep(1)
+                        #cihazsicaklik=bus.read_i2c_block_data(0x49, 0x00, 2)
+                        #sleep(1)
                         
                         pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                         pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
@@ -1549,20 +1556,21 @@ def main():
                             basincgir.config(font=("Bold", 12))
                             basincgir.place(x=120,y=180)
                             
-                            tempDataRaw = int.from_bytes(cihazsicaklik, 'big')
-                            if tempDataRaw >= 0x8000:
-                                tempDataRaw=(-256.0) + (tempDataRaw - 0x8000) * 7.8125e-3 # One LSB equals 7.812 mdegC
-                            else:
-                                tempDataRaw=tempDataRaw * 7.8125e-3 # One LSB equals 7.812 mdegC
+                            #tempDataRaw = int.from_bytes(cihazsicaklik, 'big')
+                            #if tempDataRaw >= 0x8000:
+                                #tempDataRaw=(-256.0) + (tempDataRaw - 0x8000) * 7.8125e-3 # One LSB equals 7.812 mdegC
+                            #else:
+                                #tempDataRaw=tempDataRaw * 7.8125e-3 # One LSB equals 7.812 mdegC
 
-                            print(tempDataRaw)
-                            cihazsicaklikdegerleri+=[tempDataRaw]
+                            #print(tempDataRaw)
+                            
+                            
 
 
 
                             
                             
-                            anlikveri=tk.Label(bas, text='İlk Basınç Okundu(Bar): '+str(round(basinclist[0],4))+" Sıcaklık(C): "+str(round(cihazsicaklikdegerleri[0], 2)),fg='green', bg='#dadadb')
+                            anlikveri=tk.Label(bas, text='İlk basınç okundu(Bar): '+str(round(basinclist[0],4))+", Cihaz Sıcaklık(C): "+str(round(cihazsicaklikdegerleri[0], 2)),fg='green', bg='#dadadb')
                             anlikveri.config(font=("Courier", 12))
                             anlikveri.place(x=170,y=390)
                             
@@ -1576,9 +1584,9 @@ def main():
                             kacaktestbutonu.place(x=320,y=210, height=40, width=110)
                     except:
             
-                        anlikveri=tk.Label(bas, text='Birinci Basınç Değeri & Sıcaklık Okunamadı Tekrar Tıklayın',fg='red', bg='#dadadb')
+                        anlikveri=tk.Label(bas, text='Birinci basınç değeri okunamadı!',fg='red', bg='#dadadb')
                         anlikveri.config(font=("Courier", 12))
-                        anlikveri.place(x=180,y=390)
+                        anlikveri.place(x=220,y=390)
                 
 
                 ac=tk.Button(bas, text='Basınç Testi', fg='black', bg='#299584', command=basinchesaplama)
@@ -1630,18 +1638,22 @@ def main():
                 
                 pressure=bus.read_i2c_block_data(address, 0xAA, 7)
                 pressuresonuc=((pressure[3] | (pressure[1] <<16) | (pressure[2]<<8))-3260274.9)/5050000
-
+                cihazsicaklik= (((pressure[4] <<16) | (pressure[5]<<8) | pressure[6])-4603703)/116593
+                
+                
+                cihazsicaklikdegerleri+=[cihazsicaklik]
                 acikhavabasinci+=[pressuresonuc]
                 
-                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(round(acikhavabasinci[0], 4)),fg='green', bg='#dadadb')
+                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(round(acikhavabasinci[0], 4))+ ', Cihaz Sıcaklık(C):'+ str(round(cihazsicaklikdegerleri[0],2)),fg='green', bg='#dadadb')
                 anlikveri.config(font=("Courier", 12))
-                anlikveri.place(x=210,y=370)
+                anlikveri.place(x=160,y=370)
             except:
 
                 acikhavabasinci+=[0]
-                anlikveri=tk.Label(bas, text='Açık Hava Basıncı(Bar): '+str(acikhavabasinci[0]),fg='green', bg='#dadadb')
+                cihazsicaklikdegerleri+=[0]
+                anlikveri=tk.Label(bas, text='Bir sorun var!\n İşleme devam ederseniz kabul edilebilir hata %7 olacak. \n'+'Açık Hava Basıncı(Bar): '+str(acikhavabasinci[0])+ ', Cihaz Sıcaklık(C):'+ str(cihazsicaklikdegerleri[0]),fg='red', bg='#dadadb')
                 anlikveri.config(font=("Courier", 12))
-                anlikveri.place(x=230,y=370)
+                anlikveri.place(x=150,y=320)
 
             print("devam ediyor")
 

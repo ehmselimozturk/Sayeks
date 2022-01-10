@@ -98,7 +98,7 @@ def main():
     global serino
     print("Uygulama işleme başladı")
     bas=tk.Tk()
-    bas.title("TAKTES")
+    bas.title("SAYEKS")
     bas.geometry('500x500')
     bas.config(bg='#dadadb')
     bas.minsize(800,480)

@@ -1,5 +1,5 @@
 #!/bin/bash
 fonksiyon fonksiyonAdi {
-mv PULSE /home/pi/Desktop/
+mv -r PULSE /home/pi/
 echo "Kurulum Tamamlandı."
 }

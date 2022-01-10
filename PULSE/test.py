@@ -19,8 +19,9 @@ import os
 ###BASINC ADRESİ###
 address = 0x09
 ##########
-button=Button(23)
-refbutton=Button(24)
+button = Button( 23,pull_up = False,bounce_time= None)
+refbutton = Button( 24,pull_up = False,bounce_time= None) 
+
 ######Yüzdelik Hata Payi########
 yuzdelik1 = 0
 yuzdelik2 = 0
@@ -366,7 +367,7 @@ def main():
                     def arayuz1():
                         
                         form=tk.Tk()
-                        form.title("TAKTES SONUC")
+                        form.title("SAYAC EKSPERT")
                         form.geometry('500x500')
                         form.config(bg='#dadadb')
                         form.minsize(800,480)
@@ -868,7 +869,7 @@ def main():
                         pdf.image('/home/pi/Desktop/PULSE/vhs.png',0,8,30)
                         pdf.set_xy(30,0)
                         pdf.set_font('Arial', 'B', 15)
-                        pdf.cell(10, 40, '')
+                        pdf.cell(10, 40, 'SAYAC TEST')
                         
                         #PULSE TARİHLERİ
                         pdf.set_xy(0,10)
@@ -1769,6 +1770,7 @@ def main():
     
 if __name__ == "__main__":
     main()
+
 
 
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 fonksiyon fonksiyonAdi {
-mv -r PULSE /home/pi/
+mv VHS.desktop test.py vhs.png /home/pi/
+
 echo "Kurulum Tamamlandı."
 }

@@ -394,7 +394,7 @@ def main():
                         global tarihliste
                         global saatliste
                     
-                        label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınızve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
+                        label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınız ve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
                         label1.place(x=120,y=230)
                         def hesapla():
                             global fark1b

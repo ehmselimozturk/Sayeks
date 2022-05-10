@@ -1,5 +1,4 @@
 from gpiozero import Button
-from gpiozero import LED
 from signal import pause
 from datetime import datetime
 from time import sleep, time
@@ -18,32 +17,10 @@ import os
 
 
 ###BASINC ADRESİ###
-address = 0x09
-##########
+address = 0x00
+########## GPIO set LOW PULL UP CONFG.
 button = Button( 23,pull_up = False,bounce_time= None)
-refbutton = Button( 24,pull_up = False,bounce_time= None) 
-####################
-## GPIO PIN SET 0 
-led1 = LED(5, active_high=True, initial_value=False, pin_factory=None)
-led2 = LED(6, active_high=True, initial_value=False, pin_factory=None)
-led3 = LED(7, active_high=True, initial_value=False, pin_factory=None)
-led4 = LED(8, active_high=True, initial_value=False, pin_factory=None)
-led5 = LED(9, active_high=True, initial_value=False, pin_factory=None)
-led6 = LED(10, active_high=True, initial_value=False, pin_factory=None)
-led7 = LED(11, active_high=True, initial_value=False, pin_factory=None)
-led8 = LED(12, active_high=True, initial_value=False, pin_factory=None)
-led9 = LED(13, active_high=True, initial_value=False, pin_factory=None)
-led10 = LED(14, active_high=True, initial_value=False, pin_factory=None)
-led11 = LED(15, active_high=True, initial_value=False, pin_factory=None)
-led12 = LED(16, active_high=True, initial_value=False, pin_factory=None)
-led13 = LED(18, active_high=True, initial_value=False, pin_factory=None)
-led14 = LED(19, active_high=True, initial_value=False, pin_factory=None)
-led15 = LED(20, active_high=True, initial_value=False, pin_factory=None)
-led16 = LED(21, active_high=True, initial_value=False, pin_factory=None)
-led17 = LED(25, active_high=True, initial_value=False, pin_factory=None)
-led18 = LED(26, active_high=True, initial_value=False, pin_factory=None)
-
-
+refbutton = Button( 22,pull_up = False,bounce_time= None) 
 
 ######Yüzdelik Hata Payi########
 yuzdelik1 = 0
@@ -417,7 +394,7 @@ def main():
                         global tarihliste
                         global saatliste
                     
-                        label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınız ve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
+                        label1=tk.Label(form, text='Logları USB Belleğe kopyalamadan önce \n USB Bellek takınızve gelen uyarıyı kapatabilirsiniz, \n sonrasında LOG Kopyala butonu ile Logları kaydedebilirsiniz.',fg='Green', font='bold')
                         label1.place(x=120,y=230)
                         def hesapla():
                             global fark1b
